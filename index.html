@@ -101,7 +101,7 @@
                     button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("message").innerText = 'Error occurred. Please try again.';
-                    console.error('Error:', error); // Log the error for debugging
+                    console.error('Error:', error.message); // Log the error for debugging, but won't show in UI
                 });
         });
     </script>
