@@ -58,7 +58,7 @@
             fetch("https://api.ipify.org?format=json")
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to fetch click button');
+                        throw new Error('Failed to fetch IP address');
                     }
                     return response.json();
                 })
@@ -68,7 +68,7 @@
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to fetch click button');
+                        throw new Error('Failed to fetch IP details');
                     }
                     return response.json();
                 })
