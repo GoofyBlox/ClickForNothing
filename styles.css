@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center; 
+}
+
+label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: block; 
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 30px; /* Added margin-top to move the button down */
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.1);
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    color: #333;
+    display: none;
+}
+
+#timer {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: red;
+    display: none;
+}
+
+#timeUp {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: red;
+    display: none;
+}
